@@ -17,7 +17,7 @@ old_pos = (0, 0)
 
 player = 1
 
-play_vs_computer = True
+play_vs_computer = False
 
 while True:
     event = pygame.event.get()

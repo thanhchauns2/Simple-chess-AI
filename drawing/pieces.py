@@ -337,7 +337,7 @@ class black_king:
         return False
 
     def is_valid(self, board, old_pos, new_pos):
-        if board[new_pos[0]][new_pos[1]] in white_pieces:
+        if board[new_pos[0]][new_pos[1]] in black_pieces:
             return False
         if new_pos == (6, 0):
             return self.castled_king_side(board)
