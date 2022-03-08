@@ -11,6 +11,56 @@ def check_late(board):
     serial = (white_queen == 0 or (white_queen == 1 and minor_white_pieces == 1)) + (black_queen == 0 or (black_queen == 1 and minor_black_pieces == 1))
     return serial == 2
 
+
+def analyze_current_state(board):
+    white = 0
+    black = 0
+    for i in range(8):
+        for j in range(8):
+            if board[i][j] == 'p':
+                white += 10
+                white += white_pawn_board[i][j]
+            elif board[i][j] == 'P':
+                black += 10
+                black += black_pawn_board[i][j]
+            elif board[i][j] == 'r':
+                white += 50
+                white += white_rook_board[i][j]
+            elif board[i][j] == 'R':
+                black += 50
+                black += black_rook_board[i][j]
+            elif board[i][j] == 'n':
+                white += 30
+                white += white_knight_board[i][j]
+            elif board[i][j] == 'N':
+                black += 30
+                black += black_knight_board[i][j]
+            elif board[i][j] == 'b':
+                white += 30
+                white += white_bishop_board[i][j]
+            elif board[i][j] == 'B':
+                black += 30
+                black += black_bishop_board[i][j]
+            elif board[i][j] == 'q':
+                white += 90
+                white += white_queen_board[i][j]
+            elif board[i][j] == 'Q':
+                black += 90
+                black += black_queen_board[i][j]
+            elif board[i][j] == 'k':
+                white += 900
+                if (check_late(board)):
+                    white += white_king_late_board[i][j]
+                else:
+                    white += white_king_early_board[i][j]
+            elif board[i][j] == 'K':
+                black += 900
+                if (check_late(board)):
+                    black += black_king_late_board[i][j]
+                else:
+                    black += black_king_early_board[i][j]
+    return white - black
+
 white_pawn_board = [[100, 50, 10, 5, 0, 5, 5, 0],
                     [100, 50, 10, 5, 0, -5, 10, 0],
                     [100, 50, 20, 10, 0, -10, 10, 0],
