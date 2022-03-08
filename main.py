@@ -4,6 +4,8 @@ from draw import *
 from config import *
 from drawing.pieces import *
 from AI import *
+from evaluation import *
+from analyze import *
 
 pygame.init()
 
@@ -22,8 +24,6 @@ play_vs_computer = False
 while True:
     event = pygame.event.get()
     for ev in event:
-        # for i in board:
-        #     print(i)
         if selected:
             screen = draw_highlighted_board(board, old_pos[0], old_pos[1])
         else:

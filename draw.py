@@ -2,19 +2,6 @@ import pygame
 from config import *
 from drawing.pieces import *
 
-wp = white_pawn()
-bp = black_pawn()
-wr = white_rook()
-br = black_rook()
-wn = white_knight()
-bn = black_knight()
-wb = white_bishop()
-bb = black_bishop()
-wq = white_queen()
-bq = black_queen()
-wk = white_king()
-bk = black_king()
-
 def change_state_white_king():
     wk.moved = True
 
