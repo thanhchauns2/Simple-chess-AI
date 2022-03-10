@@ -19,7 +19,9 @@ old_pos = (0, 0)
 
 player = 1
 
-play_vs_computer = False
+play_vs_computer = True
+
+END = 0
 
 while True:
     event = pygame.event.get()
@@ -28,8 +30,13 @@ while True:
             screen = draw_highlighted_board(board, old_pos[0], old_pos[1])
         else:
             screen = draw_board(board)
+        END = check_end_game(board)
+        if END == 1:
+            draw_text(screen, 'You Lost.')
+        elif END == -1:
+            draw_text(screen, 'You won!')
         pygame.display.update()
-        if play_vs_computer == True:
+        if not END and play_vs_computer == True:
             if player == -1:
                 board = computer_move(board)
                 player = 1
@@ -38,6 +45,8 @@ while True:
             pygame.quit()
             quit()
         elif ev.type == pygame.MOUSEBUTTONUP:
+            if END != 0:
+                exit(0)
             if selected:
                 selected = False
                 pos = pygame.mouse.get_pos()
@@ -52,7 +61,7 @@ while True:
                             board[3][7] = 'r'
                             board[2][7] = 'k'
                             board[0][7] = ' '
-                        change_state_white_king()
+                        change_state_white_king(new_pos)
                     elif board[old_pos[0]][old_pos[1]] == 'K':
                         if old_pos == (4, 0) and new_pos == (6, 0):
                             board[5][0] = 'R'
@@ -62,9 +71,8 @@ while True:
                             board[3][0] = 'R'
                             board[2][0] = 'K'
                             board[0][0] = ' '
-                        change_state_black_king()
-                    board[new_pos[0]][new_pos[1]] = board[old_pos[0]][old_pos[1]]
-                    board[old_pos[0]][old_pos[1]] = ' '
+                        change_state_black_king(new_pos)
+                    make_moves(board, old_pos, new_pos)
                     player = -player
             else:
                 pos = pygame.mouse.get_pos()

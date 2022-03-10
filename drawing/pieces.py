@@ -21,7 +21,7 @@ class white_pawn:
         if old_pos[1] == new_pos[1] + 2 and old_pos[0] == new_pos[0]:
             if old_pos[1] != 6:
                 return False
-            if board[new_pos[0]][new_pos[1] + 1] != ' ':
+            if board[new_pos[0]][new_pos[1] + 1] != ' ' or board[new_pos[0]][new_pos[1]] != ' ':
                 return False
             return True
         if old_pos[1] != new_pos[1] + 1:
@@ -33,7 +33,7 @@ class white_pawn:
                 return True
             return False
         else:
-            if board[new_pos[0]][new_pos[1]] in black_pieces:
+            if board[new_pos[0]][new_pos[1]] != ' ':
                 return False
             return True
 
@@ -53,7 +53,7 @@ class black_pawn:
         if old_pos[1] == new_pos[1] - 2 and old_pos[0] == new_pos[0]:
             if old_pos[1] != 1:
                 return False
-            if board[new_pos[0]][new_pos[1] - 1] != ' ':
+            if board[new_pos[0]][new_pos[1] - 1] != ' ' or board[new_pos[0]][new_pos[1]] != ' ':
                 return False
             return True
         if old_pos[1] != new_pos[1] - 1:
@@ -61,7 +61,7 @@ class black_pawn:
         if old_pos[0] != new_pos[0]:
             if abs(old_pos[0] - new_pos[0]) != 1:
                 return False
-            if board[new_pos[0]][new_pos[1]] in white_pieces:
+            if board[new_pos[0]][new_pos[1]] != ' ':
                 return True
             return False
         else:
@@ -416,9 +416,37 @@ class white_king:
 
         self.moved = False
 
+        self.x = 4
+        self.y = 7
+
+    def get_pos(self):
+        return (self.x, self.y)
+
     def draw(self, screen, x, y):
         image = pygame.image.load(self.image_link)
         screen.blit(image, (x * chess_pieces, y * chess_pieces))
+
+    def being_checked(self, board):
+        for i in range(8):
+            for j in range(8):
+                if board[i][j] not in black_pieces:
+                    continue
+                if board[i][j] == 'P':
+                    if bp.is_valid(board, (i, j), self.get_pos()):
+                        return True
+                elif board[i][j] == 'B':
+                    if bb.is_valid(board, (i, j), self.get_pos()):
+                        return True
+                elif board[i][j] == 'R':
+                    if br.is_valid(board, (i, j), self.get_pos()):
+                        return True
+                elif board[i][j] == 'N':
+                    if bn.is_valid(board, (i, j), self.get_pos()):
+                        return True
+                elif board[i][j] == 'Q':
+                    if bq.is_valid(board, (i, j), self.get_pos()):
+                        return True
+        return False
 
     def castled_king_side(self, board):
         if self.moved:
@@ -435,7 +463,7 @@ class white_king:
         return False
 
     def is_valid(self, board, old_pos, new_pos):
-        if board[new_pos[0]][new_pos[1]] in white_pieces:
+        if board[new_pos[0]][new_pos[1]] in white_pieces or board[new_pos[0]][new_pos[1]] == 'K':
             return False
         if new_pos == (6, 7):
             return self.castled_king_side(board)
@@ -484,9 +512,37 @@ class black_king:
 
         self.moved = False
 
+        self.x = 4
+        self.y = 0
+
+    def get_pos(self):
+        return (self.x, self.y)
+
     def draw(self, screen, x, y):
         image = pygame.image.load(self.image_link)
         screen.blit(image, (x * chess_pieces, y * chess_pieces))
+
+    def being_checked(self, board):
+        for i in range(8):
+            for j in range(8):
+                if board[i][j] not in white_pieces:
+                    continue
+                if board[i][j] == 'p':
+                    if wp.is_valid(board, (i, j), self.get_pos()):
+                        return True
+                elif board[i][j] == 'b':
+                    if wb.is_valid(board, (i, j), self.get_pos()):
+                        return True
+                elif board[i][j] == 'r':
+                    if wr.is_valid(board, (i, j), self.get_pos()):
+                        return True
+                elif board[i][j] == 'n':
+                    if wn.is_valid(board, (i, j), self.get_pos()):
+                        return True
+                elif board[i][j] == 'q':
+                    if wq.is_valid(board, (i, j), self.get_pos()):
+                        return True
+        return False
 
     def castled_king_side(self, board):
         if self.moved:
@@ -503,7 +559,7 @@ class black_king:
         return False
 
     def is_valid(self, board, old_pos, new_pos):
-        if board[new_pos[0]][new_pos[1]] in black_pieces:
+        if board[new_pos[0]][new_pos[1]] in black_pieces or board[new_pos[0]][new_pos[1]] == 'k':
             return False
         if new_pos == (6, 0):
             return self.castled_king_side(board)

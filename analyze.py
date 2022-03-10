@@ -15,55 +15,56 @@ def check_late(board):
     serial = (white_queen == 0 or (white_queen == 1 and minor_white_pieces == 1)) + (black_queen == 0 or (black_queen == 1 and minor_black_pieces == 1))
     return serial == 2
 
-
 def analyze_current_state(board):
     white = 0
     black = 0
+    late = check_late(board)
     for i in range(8):
         for j in range(8):
-            if board[i][j] == 'p':
-                white += 10
-                white += white_pawn_board[i][j]
-            elif board[i][j] == 'P':
-                black += 10
-                black += black_pawn_board[i][j]
-            elif board[i][j] == 'r':
-                white += 50
-                white += white_rook_board[i][j]
-            elif board[i][j] == 'R':
-                black += 50
-                black += black_rook_board[i][j]
-            elif board[i][j] == 'n':
-                white += 30
-                white += white_knight_board[i][j]
-            elif board[i][j] == 'N':
-                black += 30
-                black += black_knight_board[i][j]
-            elif board[i][j] == 'b':
-                white += 30
-                white += white_bishop_board[i][j]
-            elif board[i][j] == 'B':
-                black += 30
-                black += black_bishop_board[i][j]
-            elif board[i][j] == 'q':
-                white += 90
-                white += white_queen_board[i][j]
-            elif board[i][j] == 'Q':
-                black += 90
-                black += black_queen_board[i][j]
-            elif board[i][j] == 'k':
+            if board[i][j] == 'k':
                 white += 900
-                if (check_late(board)):
-                    white += white_king_late_board[i][j]
+                if late:
+                    white += evaluate['k']['late'][i][j]
                 else:
-                    white += white_king_early_board[i][j]
+                    white += evaluate['k']['early'][i][j]
             elif board[i][j] == 'K':
-                black += 900
-                if (check_late(board)):
-                    black += black_king_late_board[i][j]
+                black -= 900
+                if late:
+                    black += evaluate['K']['late'][i][j]
                 else:
-                    black += black_king_early_board[i][j]
-    return white - black
+                    black += evaluate['K']['early'][i][j]
+            elif board[i][j] in white_pieces:
+                white += pieces[board[i][j]]
+                white += evaluate[board[i][j]][i][j]
+            else:
+                black += pieces[board[i][j]]
+                black += evaluate[board[i][j]][i][j]
+    return white + black
+
+def analyze_next_state(current_point, old_pos, new_pos, moving_piece, captured_piece, before, after):
+    point = current_point
+    # print(captured_piece)
+    if after:
+        after = 'late'
+    else:
+        after = 'early'
+    if moving_piece == 'k':
+        point -= evaluate['k'][before][old_pos[0]][old_pos[1]]
+        point += evaluate['k'][after][new_pos[0]][new_pos[1]]
+    elif moving_piece == 'K':
+        point -= evaluate['K'][before][old_pos[0]][old_pos[1]]
+        point += evaluate['K'][after][new_pos[0]][new_pos[1]]
+    else:
+        point -= evaluate[moving_piece][old_pos[0]][old_pos[1]]
+        point += evaluate[moving_piece][new_pos[0]][new_pos[1]]
+    if captured_piece == 'k':
+        point -= evaluate['k'][before][new_pos[0]][new_pos[1]]
+    elif captured_piece == 'K':
+        point -= evaluate['K'][before][new_pos[0]][new_pos[1]]
+    else:
+        point -= evaluate[captured_piece][new_pos[0]][new_pos[1]]
+    point -= pieces[captured_piece]
+    return point
 
 def check_end_game(board):
     if white_king_dead(board):
@@ -80,46 +81,65 @@ def get_available_moves(board, i, j):
                 available_moves.append((x, y))
     return available_moves
 
-def white_king_dead(board):
+def get_available_moves_multiple_pieces(board, pieces):
     available_moves = []
-    for i in range(8):
-        for j in range(8):
-            if board[i][j] == 'k':
-                available_moves = get_available_moves(board, i, j)
-                available_moves.append((i, j))
-                break
+    for x in range(8):
+        for y in range(8):
+            for i in pieces:
+                if is_valid(board, (x, y), (i[0], i[1])):
+                    available_moves.append([i, (x, y)])
+    return available_moves
+
+def get_black_available_moves(board):
+    pieces = []
     for i in range(8):
         for j in range(8):
             if board[i][j] in black_pieces:
-                for x, y in available_moves:
-                    if not is_valid(board, (x, y), (i, j)):
-                        return False
+                pieces.append((i, j))
+    return get_available_moves_multiple_pieces(board, pieces)
+
+def get_white_available_moves(board):
+    pieces = []
+    for i in range(8):
+        for j in range(8):
+            if board[i][j] in white_pieces:
+                pieces.append((i, j))
+    return get_available_moves_multiple_pieces(board, pieces)
+
+def white_king_dead(board):
+    available_moves = []
+    m, n = wk.get_pos()
+    available_moves = get_available_moves(board, m, n)
+    available_moves.append((m, n))
+    for (x, y) in available_moves:
+        board[x][y], board[m][n] = board[m][n], board[x][y]
+        ck = 0
+        for i in range(8):
+            for j in range(8):
+                if board[i][j] in black_pieces:
+                    if is_valid(board, (x, y), (i, j)):
+                        ck = 1
+                        break
+        board[x][y], board[m][n] = board[m][n], board[x][y]
+        if ck == 0:
+            return False
     return True
 
 def black_king_dead(board):
     available_moves = []
-    m, n = 0, 0
-    for i in range(8):
-        for j in range(8):
-            if board[i][j] == 'K':
-                available_moves = get_available_moves(board, i, j)
-                available_moves.append((i, j))
-                m, n = i, j
-                break
-    # print(available_moves)
+    m, n = bk.get_pos()
+    available_moves = get_available_moves(board, m, n)
+    available_moves.append((m, n))
     for (x, y) in available_moves:
         board[x][y], board[m][n] = board[m][n], board[x][y]
         ck = 0
         for i in range(8):
             for j in range(8):
                 if board[i][j] in white_pieces:
-                    # if board[i][j] == 'q':
-                        # print(i, j, x, y, is_valid(board, (x, y), (i, j)))
                     if is_valid(board, (x, y), (i, j)):
                         ck = 1
                         break
         board[x][y], board[m][n] = board[m][n], board[x][y]
         if ck == 0:
-            # print(x, y)
             return False
     return True
