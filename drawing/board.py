@@ -15,12 +15,76 @@ def new_chess_board():
     return screen
 
 def make_moves(board = [], old_pos = (0, 0), new_pos = (0, 0)):
+    if board[old_pos[0]][old_pos[1]] == 'k':
+        if old_pos == (4, 7) and new_pos == (6, 7):
+            board[4][7] = ' '
+            board[5][7] = 'r'
+            board[6][7] = 'k'
+            board[7][7] = ' '
+            return 0
+        elif old_pos == (4, 7) and new_pos == (2, 7):
+            board[4][7] = ' '
+            board[3][7] = 'r'
+            board[2][7] = 'k'
+            board[0][7] = ' '
+            return 0
+    if board[old_pos[0]][old_pos[1]] == 'K':
+        if old_pos == (4, 0) and new_pos == (6, 0):
+            board[4][0] = ' '
+            board[5][0] = 'R'
+            board[6][0] = 'K'
+            board[7][0] = ' '
+            return 0
+        elif old_pos == (4, 0) and new_pos == (2, 0):
+            board[4][0] = ' '
+            board[3][0] = 'R'
+            board[2][0] = 'K'
+            board[0][0] = ' '
+            return 0
     board[new_pos[0]][new_pos[1]] = board[old_pos[0]][old_pos[1]]
     board[old_pos[0]][old_pos[1]] = ' '
-    if old_pos[1] == 7 and board[new_pos[0]][new_pos[1]] == 'P':
+    if new_pos[1] == 7 and board[new_pos[0]][new_pos[1]] == 'P':
         board[new_pos[0]][new_pos[1]] = 'Q'
-    if old_pos[1] == 0 and board[new_pos[0]][new_pos[1]] == 'p':
+        return 1
+    if new_pos[1] == 0 and board[new_pos[0]][new_pos[1]] == 'p':
         board[new_pos[0]][new_pos[1]] = 'q'
+        return 1
+
+def undo_moves(board = [], old_pos = (0, 0), new_pos = (0, 0), captured_piece = ' ', promoted = 0):
+    if board[new_pos[0]][new_pos[1]] == 'k':
+        if new_pos == (6, 7) and old_pos == (4, 7):
+            board[4][7] = 'k'
+            board[5][7] = ' '
+            board[6][7] = ' '
+            board[7][7] = 'r'
+            return
+        elif new_pos == (2, 7) and old_pos == (4, 7):
+            board[4][7] = 'k'
+            board[3][7] = ' '
+            board[2][7] = ' '
+            board[0][7] = 'r'
+            return
+    if board[new_pos[0]][new_pos[1]] == 'K':
+        if new_pos == (6, 0) and old_pos == (4, 0):
+            board[4][0] = 'K'
+            board[5][0] = ' '
+            board[6][0] = ' '
+            board[7][0] = 'R'
+            return
+        elif new_pos == (2, 0) and old_pos == (4, 0):
+            board[4][0] = 'K'
+            board[3][0] = ' '
+            board[2][0] = ' '
+            board[0][0] = 'R'
+            return
+    board[old_pos[0]][old_pos[1]] = board[new_pos[0]][new_pos[1]]
+    board[new_pos[0]][new_pos[1]] = captured_piece
+    if promoted == 1:
+        if new_pos[1] == 7:
+            board[old_pos[0]][old_pos[1]] = 'P'
+        else:
+            board[old_pos[0]][old_pos[1]] = 'p'
+
 
 def new_board():
     board = [['R', 'P', ' ', ' ', ' ', ' ', 'p', 'r'],

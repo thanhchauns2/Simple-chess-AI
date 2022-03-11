@@ -15,6 +15,38 @@ def check_late(board):
     serial = (white_queen == 0 or (white_queen == 1 and minor_white_pieces == 1)) + (black_queen == 0 or (black_queen == 1 and minor_black_pieces == 1))
     return serial == 2
 
+def counting_pieces(board):
+    count = {
+        ' ': 0,
+        'p': 0,
+        'P': 0,
+        'r': 0,
+        'R': 0,
+        'n': 0,
+        'N': 0,
+        'b': 0,
+        'B': 0,
+        'q': 0,
+        'Q': 0,
+        'k': 0,
+        'K': 0
+    }
+    for i in range(8):
+        for j in range(8):
+            count[board[i][j]] += 1
+    return count
+
+def check_late_using_dict(count):
+    if count['q'] == 1 and count['b'] + count['n'] + count['r'] >= 2:
+        return False
+    elif count['Q'] == 1 and count['B'] + count['N'] + count['R'] >= 2:
+        return False
+    elif count['q'] > 1:
+        return False
+    elif count['Q'] > 1:
+        return False
+    return True
+
 def analyze_current_state(board):
     white = 0
     black = 0
@@ -41,26 +73,29 @@ def analyze_current_state(board):
                 black += evaluate[board[i][j]][i][j]
     return white + black
 
-def analyze_next_state(current_point, old_pos, new_pos, moving_piece, captured_piece, before, after):
+def analyze_next_state(current_point, old_pos, new_pos, moving_piece, captured_piece, before):
     point = current_point
-    # print(captured_piece)
-    if after:
-        after = 'late'
-    else:
-        after = 'early'
+    state_1 = 'early'
+    state_2 = 'early'
+    if check_late_using_dict(before):
+        state_1 = 'late'
+    before[captured_piece] -= 1
+    if check_late_using_dict(before):
+        state_2 = 'late'
+    before[captured_piece] += 1
     if moving_piece == 'k':
-        point -= evaluate['k'][before][old_pos[0]][old_pos[1]]
-        point += evaluate['k'][after][new_pos[0]][new_pos[1]]
+        point -= evaluate['k'][state_1][old_pos[0]][old_pos[1]]
+        point += evaluate['k'][state_2][new_pos[0]][new_pos[1]]
     elif moving_piece == 'K':
-        point -= evaluate['K'][before][old_pos[0]][old_pos[1]]
-        point += evaluate['K'][after][new_pos[0]][new_pos[1]]
+        point -= evaluate['K'][state_1][old_pos[0]][old_pos[1]]
+        point += evaluate['K'][state_2][new_pos[0]][new_pos[1]]
     else:
         point -= evaluate[moving_piece][old_pos[0]][old_pos[1]]
         point += evaluate[moving_piece][new_pos[0]][new_pos[1]]
     if captured_piece == 'k':
-        point -= evaluate['k'][before][new_pos[0]][new_pos[1]]
+        point -= evaluate['k'][state_1][new_pos[0]][new_pos[1]]
     elif captured_piece == 'K':
-        point -= evaluate['K'][before][new_pos[0]][new_pos[1]]
+        point -= evaluate['K'][state_1][new_pos[0]][new_pos[1]]
     else:
         point -= evaluate[captured_piece][new_pos[0]][new_pos[1]]
     point -= pieces[captured_piece]
