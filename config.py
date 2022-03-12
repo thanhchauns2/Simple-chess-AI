@@ -19,4 +19,4 @@ text_color = (249, 248, 113)
 # AI config
 
 best_moves_limit = 3
-analyze_depth = 3
+analyze_depth = 4

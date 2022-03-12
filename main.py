@@ -23,6 +23,8 @@ play_vs_computer = True
 
 END = 0
 
+piece_list = counting_pieces(board)
+
 while True:
     event = pygame.event.get()
     for ev in event:
@@ -30,7 +32,7 @@ while True:
             screen = draw_highlighted_board(board, old_pos[0], old_pos[1])
         else:
             screen = draw_board(board)
-        END = check_end_game(board)
+        END = check_end_game(piece_list)
         if END == 1:
             draw_text(screen, 'You Lost.')
         elif END == -1:
@@ -38,7 +40,7 @@ while True:
         pygame.display.update()
         if not END and play_vs_computer == True:
             if player == -1:
-                board = computer_move(board)
+                board = computer_move(board, piece_list)
                 player = 1
                 continue
         if ev.type == pygame.QUIT:
@@ -56,7 +58,7 @@ while True:
                         change_state_white_king(new_pos)
                     elif board[old_pos[0]][old_pos[1]] == 'K':
                         change_state_black_king(new_pos)
-                    make_moves(board, old_pos, new_pos)
+                    make_moves(piece_list, board, old_pos, new_pos)
                     player = -player
             else:
                 pos = pygame.mouse.get_pos()

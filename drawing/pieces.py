@@ -203,7 +203,7 @@ class white_bishop:
             return False
         if abs(old_pos[0] - new_pos[0]) != abs(old_pos[1] - new_pos[1]):
             return False
-        if old_pos[0] == new_pos[0] and old_pos[1] == new_pos[1]:
+        if old_pos[0] == new_pos[0] or old_pos[1] == new_pos[1]:
             return False
         dist = abs(old_pos[0] - new_pos[0])
         if old_pos[0] > new_pos[0]:
@@ -245,7 +245,7 @@ class black_bishop:
             return False
         if abs(old_pos[0] - new_pos[0]) != abs(old_pos[1] - new_pos[1]):
             return False
-        if old_pos[0] == new_pos[0] and old_pos[1] == new_pos[1]:
+        if old_pos[0] == new_pos[0] or old_pos[1] == new_pos[1]:
             return False
         dist = abs(old_pos[0] - new_pos[0])
         if old_pos[0] > new_pos[0]:

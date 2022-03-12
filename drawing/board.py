@@ -3,6 +3,22 @@ from config import *
 from drawing.pieces import *
 from evaluation import *
 
+temp_piece_list = {
+    ' ': 0,
+    'p': 0,
+    'P': 0,
+    'r': 0,
+    'R': 0,
+    'n': 0,
+    'N': 0,
+    'b': 0,
+    'B': 0,
+    'q': 0,
+    'Q': 0,
+    'k': 0,
+    'K': 0
+}
+
 def new_chess_board():
     screen = pygame.display.set_mode(screen_size)
     screen.fill(screen_color)
@@ -14,7 +30,8 @@ def new_chess_board():
             pygame.draw.rect(screen, black_block, (i * block_size, j * block_size, block_size, block_size))
     return screen
 
-def make_moves(board = [], old_pos = (0, 0), new_pos = (0, 0)):
+def make_moves(piece_list = {}, board = [], old_pos = (0, 0), new_pos = (0, 0)):
+    piece_list[board[new_pos[0]][new_pos[1]]] -= 1
     if board[old_pos[0]][old_pos[1]] == 'k':
         if old_pos == (4, 7) and new_pos == (6, 7):
             board[4][7] = ' '
@@ -50,7 +67,8 @@ def make_moves(board = [], old_pos = (0, 0), new_pos = (0, 0)):
         board[new_pos[0]][new_pos[1]] = 'q'
         return 1
 
-def undo_moves(board = [], old_pos = (0, 0), new_pos = (0, 0), captured_piece = ' ', promoted = 0):
+def undo_moves(piece_list = {}, board = [], old_pos = (0, 0), new_pos = (0, 0), captured_piece = ' ', promoted = 0):
+    piece_list[captured_piece] += 1
     if board[new_pos[0]][new_pos[1]] == 'k':
         if new_pos == (6, 7) and old_pos == (4, 7):
             board[4][7] = 'k'
@@ -97,7 +115,7 @@ def new_board():
              ['R', 'P', ' ', ' ', ' ', ' ', 'p', 'r']]
     return board
 
-def is_valid(board, new_pos, old_pos):
+def is_valid(board, new_pos, old_pos, piece_list = temp_piece_list):
     if new_pos[0] < 0 or new_pos[0] > 7 or new_pos[1] < 0 or new_pos[1] > 7:
         return False
     if color[board[new_pos[0]][new_pos[1]]] == color[board[old_pos[0]][old_pos[1]]]:
@@ -109,43 +127,43 @@ def is_valid(board, new_pos, old_pos):
                 if not bp.is_valid(board, old_pos, new_pos):
                     return False
                 temp_board = copy.deepcopy(board)
-                make_moves(temp_board, old_pos, new_pos)
+                make_moves(piece_list, temp_board, old_pos, new_pos)
                 if bk.being_checked(temp_board):
                     return False
             elif piece == 'R':
-                if br.is_valid(board, old_pos, new_pos):
+                if not br.is_valid(board, old_pos, new_pos):
                     return False
                 temp_board = copy.deepcopy(board)
-                make_moves(temp_board, old_pos, new_pos)
-                if bk.being_checked(temp_board):
+                make_moves(piece_list, temp_board, old_pos, new_pos)
+                if not bk.being_checked(temp_board):
                     return False
             elif piece == 'N':
-                if bn.is_valid(board, old_pos, new_pos):
+                if not bn.is_valid(board, old_pos, new_pos):
                     return False
                 temp_board = copy.deepcopy(board)
-                make_moves(temp_board, old_pos, new_pos)
-                if bk.being_checked(temp_board):
+                make_moves(piece_list, temp_board, old_pos, new_pos)
+                if not bk.being_checked(temp_board):
                     return False
             elif piece == 'B':
-                if bb.is_valid(board, old_pos, new_pos):
+                if not bb.is_valid(board, old_pos, new_pos):
                     return False
                 temp_board = copy.deepcopy(board)
-                make_moves(temp_board, old_pos, new_pos)
-                if bk.being_checked(temp_board):
+                make_moves(piece_list, temp_board, old_pos, new_pos)
+                if not bk.being_checked(temp_board):
                     return False
             elif piece == 'K':
-                if bk.is_valid(board, old_pos, new_pos):
+                if not bk.is_valid(board, old_pos, new_pos):
                     return False
                 temp_board = copy.deepcopy(board)
-                make_moves(temp_board, old_pos, new_pos)
-                if bk.being_checked(temp_board):
+                make_moves(piece_list, temp_board, old_pos, new_pos)
+                if not bk.being_checked(temp_board):
                     return False
             elif piece == 'Q':
-                if bq.is_valid(board, old_pos, new_pos):
+                if not bq.is_valid(board, old_pos, new_pos):
                     return False
                 temp_board = copy.deepcopy(board)
-                make_moves(temp_board, old_pos, new_pos)
-                if bk.being_checked(temp_board):
+                make_moves(piece_list, temp_board, old_pos, new_pos)
+                if not bk.being_checked(temp_board):
                     return False
             return True
     else:
@@ -154,42 +172,42 @@ def is_valid(board, new_pos, old_pos):
                 if not wp.is_valid(board, old_pos, new_pos):
                     return False
                 temp_board = copy.deepcopy(board)
-                make_moves(temp_board, old_pos, new_pos)
+                make_moves(piece_list, temp_board, old_pos, new_pos)
                 if wk.being_checked(temp_board):
                     return False
             elif piece == 'r':
-                if wr.is_valid(board, old_pos, new_pos):
+                if not wr.is_valid(board, old_pos, new_pos):
                     return False
                 temp_board = copy.deepcopy(board)
-                make_moves(temp_board, old_pos, new_pos)
-                if wk.being_checked(temp_board):
+                make_moves(piece_list, temp_board, old_pos, new_pos)
+                if not wk.being_checked(temp_board):
                     return False
             elif piece == 'n':
-                if wn.is_valid(board, old_pos, new_pos):
+                if not wn.is_valid(board, old_pos, new_pos):
                     return False
                 temp_board = copy.deepcopy(board)
-                make_moves(temp_board, old_pos, new_pos)
-                if wk.being_checked(temp_board):
+                make_moves(piece_list, temp_board, old_pos, new_pos)
+                if not wk.being_checked(temp_board):
                     return False
             elif piece == 'b':
-                if wb.is_valid(board, old_pos, new_pos):
+                if not wb.is_valid(board, old_pos, new_pos):
                     return False
                 temp_board = copy.deepcopy(board)
-                make_moves(temp_board, old_pos, new_pos)
-                if wk.being_checked(temp_board):
+                make_moves(piece_list, temp_board, old_pos, new_pos)
+                if not wk.being_checked(temp_board):
                     return False
             elif piece == 'k':
-                if wk.is_valid(board, old_pos, new_pos):
+                if not wk.is_valid(board, old_pos, new_pos):
                     return False
                 temp_board = copy.deepcopy(board)
-                make_moves(temp_board, old_pos, new_pos)
-                if wk.being_checked(temp_board):
+                make_moves(piece_list, temp_board, old_pos, new_pos)
+                if not wk.being_checked(temp_board):
                     return False
             elif piece == 'q':
                 if wq.is_valid(board, old_pos, new_pos):
                     return False
                 temp_board = copy.deepcopy(board)
-                make_moves(temp_board, old_pos, new_pos)
+                make_moves(piece_list, temp_board, old_pos, new_pos)
                 if wk.being_checked(temp_board):
                     return False
             return True

@@ -101,11 +101,11 @@ def analyze_next_state(current_point, old_pos, new_pos, moving_piece, captured_p
     point -= pieces[captured_piece]
     return point
 
-def check_end_game(board):
-    if white_king_dead(board):
-        return -1
-    elif black_king_dead(board):
+def check_end_game(piece_list):
+    if piece_list['k'] == 0:
         return 1
+    elif piece_list['K'] == 0:
+        return -1
     return 0
 
 def get_available_moves(board, i, j):
@@ -121,6 +121,8 @@ def get_available_moves_multiple_pieces(board, pieces):
     for x in range(8):
         for y in range(8):
             for i in pieces:
+                if i == (x, y):
+                    continue
                 if is_valid(board, (x, y), (i[0], i[1])):
                     available_moves.append([i, (x, y)])
     return available_moves
@@ -140,41 +142,3 @@ def get_white_available_moves(board):
             if board[i][j] in white_pieces:
                 pieces.append((i, j))
     return get_available_moves_multiple_pieces(board, pieces)
-
-def white_king_dead(board):
-    available_moves = []
-    m, n = wk.get_pos()
-    available_moves = get_available_moves(board, m, n)
-    available_moves.append((m, n))
-    for (x, y) in available_moves:
-        board[x][y], board[m][n] = board[m][n], board[x][y]
-        ck = 0
-        for i in range(8):
-            for j in range(8):
-                if board[i][j] in black_pieces:
-                    if is_valid(board, (x, y), (i, j)):
-                        ck = 1
-                        break
-        board[x][y], board[m][n] = board[m][n], board[x][y]
-        if ck == 0:
-            return False
-    return True
-
-def black_king_dead(board):
-    available_moves = []
-    m, n = bk.get_pos()
-    available_moves = get_available_moves(board, m, n)
-    available_moves.append((m, n))
-    for (x, y) in available_moves:
-        board[x][y], board[m][n] = board[m][n], board[x][y]
-        ck = 0
-        for i in range(8):
-            for j in range(8):
-                if board[i][j] in white_pieces:
-                    if is_valid(board, (x, y), (i, j)):
-                        ck = 1
-                        break
-        board[x][y], board[m][n] = board[m][n], board[x][y]
-        if ck == 0:
-            return False
-    return True
