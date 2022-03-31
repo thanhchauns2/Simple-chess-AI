@@ -1,4 +1,3 @@
-from stat import FILE_ATTRIBUTE_SPARSE_FILE
 import pygame
 from config import *
 
@@ -47,29 +46,31 @@ class Pieces:
                 break
     
     def diagonal(self, board, old_pos, new_pos):
-        dist = abs(old_pos[0] - new_pos[0])
-        if old_pos[0] > new_pos[0]:
-            if old_pos[1] > new_pos[1]:
-                for i in range(1, dist):
-                    if board[old_pos[0] - i][old_pos[1] - i] != ' ':
-                        return False
+        for i in range(1, 8):
+            if old_pos[0] + i == new_pos[0] and old_pos[1] + i == new_pos[1]:
                 return True
-            else:
-                for i in range(1, dist):
-                    if board[old_pos[0] - i][old_pos[1] + i] != ' ':
-                        return False
+            if old_pos[0] + i > 7 or old_pos[0] + i < 0 or old_pos[1] + i > 7 or old_pos[1] + i < 0 or not self.check_blank(board[old_pos[0] + i][old_pos[1] + i]):
+                break
+        
+        for i in range(1, 8):
+            if old_pos[0] - i == new_pos[0] and old_pos[1] - i == new_pos[1]:
                 return True
-        else:
-            if old_pos[1] > new_pos[1]:
-                for i in range(1, dist):
-                    if board[old_pos[0] + i][old_pos[1] - i] != ' ':
-                        return False
+            if old_pos[0] - i > 7 or old_pos[0] - i < 0 or old_pos[1] - i > 7 or old_pos[1] - i < 0 or not self.check_blank(board[old_pos[0] - i][old_pos[1] - i]):
+                break
+        
+        for i in range(1, 8):
+            if old_pos[0] + i == new_pos[0] and old_pos[1] - i == new_pos[1]:
                 return True
-            else:
-                for i in range(1, dist):
-                    if board[old_pos[0] + i][old_pos[1] + i] != ' ':
-                        return False
+            if old_pos[0] + i > 7 or old_pos[0] + i < 0 or old_pos[1] - i > 7 or old_pos[1] - i < 0 or not self.check_blank(board[old_pos[0] + i][old_pos[1] - i]):
+                break
+        
+        for i in range(1, 8):
+            if old_pos[0] - i == new_pos[0] and old_pos[1] + i == new_pos[1]:
                 return True
+            if old_pos[0] - i > 7 or old_pos[0] - i < 0 or old_pos[1] + i > 7 or old_pos[1] + i < 0 or not self.check_blank(board[old_pos[0] - i][old_pos[1] + i]):
+                break
+        
+        return False
 
 class Pawn(Pieces):
 
@@ -220,7 +221,7 @@ class white_bishop(Bishop):
         self.image_link = '.\\images\\white_bishop.png'
         self.color = white_pieces
 
-class black_bishop(Pieces):
+class black_bishop(Bishop):
 
     def __init__(self):
 
@@ -251,6 +252,9 @@ wb = white_bishop()
 bb = black_bishop()
 wq = white_queen()
 bq = black_queen()
+
+class King(Pieces):
+    pass
 
 class white_king(Pieces):
 
@@ -311,35 +315,35 @@ class white_king(Pieces):
             return False
         if old_pos[0] == new_pos[0] and old_pos[1] == new_pos[1]:
             return False
-        board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
-        for i in range(8):
-            for j in range(8):
-                if board[i][j] in black_pieces:
-                    if board[i][j] == 'P':
-                        if bp.is_valid(board, (i, j), new_pos):
-                            board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
-                            return False
-                    elif board[i][j] == 'R':
-                        if br.is_valid(board, (i, j), new_pos):
-                            board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
-                            return False
-                    elif board[i][j] == 'N':
-                        if bn.is_valid(board, (i, j), new_pos):
-                            board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
-                            return False
-                    elif board[i][j] == 'B':
-                        if bb.is_valid(board, (i, j), new_pos):
-                            board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
-                            return False
-                    elif board[i][j] == 'Q':
-                        if bq.is_valid(board, (i, j), new_pos):
-                            board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
-                            return False
-                    elif board[i][j] == 'K':
-                        if bk.is_valid(board, (i, j), new_pos):
-                            board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
-                            return False
-        board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
+        # board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
+        # for i in range(8):
+        #     for j in range(8):
+        #         if board[i][j] in black_pieces:
+        #             if board[i][j] == 'P':
+        #                 if bp.is_valid(board, (i, j), new_pos):
+        #                     board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
+        #                     return False
+        #             elif board[i][j] == 'R':
+        #                 if br.is_valid(board, (i, j), new_pos):
+        #                     board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
+        #                     return False
+        #             elif board[i][j] == 'N':
+        #                 if bn.is_valid(board, (i, j), new_pos):
+        #                     board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
+        #                     return False
+        #             elif board[i][j] == 'B':
+        #                 if bb.is_valid(board, (i, j), new_pos):
+        #                     board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
+        #                     return False
+        #             elif board[i][j] == 'Q':
+        #                 if bq.is_valid(board, (i, j), new_pos):
+        #                     board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
+        #                     return False
+        #             elif board[i][j] == 'K':
+        #                 if bk.is_valid(board, (i, j), new_pos):
+        #                     board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
+        #                     return False
+        # board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
         return True
 
 class black_king(Pieces):
@@ -402,35 +406,35 @@ class black_king(Pieces):
         if old_pos[0] == new_pos[0] and old_pos[1] == new_pos[1]:
             return False
         
-        board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
-        for i in range(8):
-            for j in range(8):
-                if board[i][j] in white_pieces:
-                    if board[i][j] == 'p':
-                        if wp.is_valid(board, (i, j), new_pos):
-                            board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
-                            return False
-                    elif board[i][j] == 'r':
-                        if wr.is_valid(board, (i, j), new_pos):
-                            board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
-                            return False
-                    elif board[i][j] == 'n':
-                        if wn.is_valid(board, (i, j), new_pos):
-                            board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
-                            return False
-                    elif board[i][j] == 'b':
-                        if wb.is_valid(board, (i, j), new_pos):
-                            board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
-                            return False
-                    elif board[i][j] == 'q':
-                        if wq.is_valid(board, (i, j), new_pos):
-                            board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
-                            return False
-                    elif board[i][j] == 'k':
-                        if wk.is_valid(board, (i, j), new_pos):
-                            board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
-                            return False
-        board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
+        # board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
+        # for i in range(8):
+        #     for j in range(8):
+        #         if board[i][j] in white_pieces:
+        #             if board[i][j] == 'p':
+        #                 if wp.is_valid(board, (i, j), new_pos):
+        #                     board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
+        #                     return False
+        #             elif board[i][j] == 'r':
+        #                 if wr.is_valid(board, (i, j), new_pos):
+        #                     board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
+        #                     return False
+        #             elif board[i][j] == 'n':
+        #                 if wn.is_valid(board, (i, j), new_pos):
+        #                     board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
+        #                     return False
+        #             elif board[i][j] == 'b':
+        #                 if wb.is_valid(board, (i, j), new_pos):
+        #                     board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
+        #                     return False
+        #             elif board[i][j] == 'q':
+        #                 if wq.is_valid(board, (i, j), new_pos):
+        #                     board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
+        #                     return False
+        #             elif board[i][j] == 'k':
+        #                 if wk.is_valid(board, (i, j), new_pos):
+        #                     board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
+        #                     return False
+        # board[new_pos[0]][new_pos[1]], board[old_pos[0]][old_pos[1]] = board[old_pos[0]][old_pos[1]], board[new_pos[0]][new_pos[1]]
         return True
 
 wk = white_king()
