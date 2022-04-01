@@ -11,7 +11,7 @@ def change_state_black_king(new_pos):
     bk.moved = True
     bk.x, bk.y = new_pos
 
-def draw_board(board):
+def draw_board(state):
     screen = pygame.display.set_mode(screen_size)
     screen.fill(screen_color)
     block_size = screen_size[0] / 8
@@ -23,34 +23,34 @@ def draw_board(board):
 
     for i in range(8):
         for j in range(8):
-            if board[i][j] == 'r':
+            if state.board[i][j] == 'r':
                 wr.draw(screen, i, j)
-            elif board[i][j] == 'n':
+            elif state.board[i][j] == 'n':
                 wn.draw(screen, i, j)
-            elif board[i][j] == 'b':
+            elif state.board[i][j] == 'b':
                 wb.draw(screen, i, j)
-            elif board[i][j] == 'k':
+            elif state.board[i][j] == 'k':
                 wk.draw(screen, i, j)
-            elif board[i][j] == 'q':
+            elif state.board[i][j] == 'q':
                 wq.draw(screen, i, j)
-            elif board[i][j] == 'p':
+            elif state.board[i][j] == 'p':
                 wp.draw(screen, i, j)
-            elif board[i][j] == 'R':
+            elif state.board[i][j] == 'R':
                 br.draw(screen, i, j)
-            elif board[i][j] == 'N':
+            elif state.board[i][j] == 'N':
                 bn.draw(screen, i, j)
-            elif board[i][j] == 'B':
+            elif state.board[i][j] == 'B':
                 bb.draw(screen, i, j)
-            elif board[i][j] == 'K':
+            elif state.board[i][j] == 'K':
                 bk.draw(screen, i, j)
-            elif board[i][j] == 'Q':
+            elif state.board[i][j] == 'Q':
                 bq.draw(screen, i, j)
-            elif board[i][j] == 'P':
+            elif state.board[i][j] == 'P':
                 bp.draw(screen, i, j)
     return screen
 
 
-def draw_highlighted_board(board, x, y):
+def draw_highlighted_board(state, x, y):
     screen = pygame.display.set_mode(screen_size)
     screen.fill(screen_color)
     block_size = screen_size[0] / 8
@@ -62,7 +62,7 @@ def draw_highlighted_board(board, x, y):
                 else:
                     pygame.draw.rect(screen, highlighted_black_block, (i * block_size, j * block_size, block_size, block_size))
                 continue
-            if is_valid(board, (i, j), (x, y)):
+            if is_valid(state, (i, j), (x, y)):
                 if (i + j) % 2 == 0:
                     pygame.draw.rect(screen, highlighted_white_block, (i * block_size, j * block_size, block_size, block_size))
                 else:
@@ -74,29 +74,29 @@ def draw_highlighted_board(board, x, y):
 
     for i in range(8):
         for j in range(8):
-            if board[i][j] == 'r':
+            if state.board[i][j] == 'r':
                 wr.draw(screen, i, j)
-            elif board[i][j] == 'n':
+            elif state.board[i][j] == 'n':
                 wn.draw(screen, i, j)
-            elif board[i][j] == 'b':
+            elif state.board[i][j] == 'b':
                 wb.draw(screen, i, j)
-            elif board[i][j] == 'k':
+            elif state.board[i][j] == 'k':
                 wk.draw(screen, i, j)
-            elif board[i][j] == 'q':
+            elif state.board[i][j] == 'q':
                 wq.draw(screen, i, j)
-            elif board[i][j] == 'p':
+            elif state.board[i][j] == 'p':
                 wp.draw(screen, i, j)
-            elif board[i][j] == 'R':
+            elif state.board[i][j] == 'R':
                 br.draw(screen, i, j)
-            elif board[i][j] == 'N':
+            elif state.board[i][j] == 'N':
                 bn.draw(screen, i, j)
-            elif board[i][j] == 'B':
+            elif state.board[i][j] == 'B':
                 bb.draw(screen, i, j)
-            elif board[i][j] == 'K':
+            elif state.board[i][j] == 'K':
                 bk.draw(screen, i, j)
-            elif board[i][j] == 'Q':
+            elif state.board[i][j] == 'Q':
                 bq.draw(screen, i, j)
-            elif board[i][j] == 'P':
+            elif state.board[i][j] == 'P':
                 bp.draw(screen, i, j)
     return screen
 
