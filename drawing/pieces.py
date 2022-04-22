@@ -321,7 +321,7 @@ class Queen(Pieces):
 class white_pawn(Pawn):
 
     def __init__(self):
-        self.image_link = '.\\images\\white_pawn.jpg'
+        self.image_link = 'images/white_pawn.jpg'
         self.direction = 1
         self.first_place = 6
         self.anti_color = black_pieces
@@ -330,7 +330,7 @@ class white_pawn(Pawn):
 class black_pawn(Pawn):
 
     def __init__(self):
-        self.image_link = '.\\images\\black_pawn.png'
+        self.image_link = 'images/black_pawn.png'
         self.direction = -1
         self.first_place = 1
         self.anti_color = white_pieces
@@ -340,7 +340,7 @@ class white_rook(Rook):
 
     def __init__(self):
 
-        self.image_link = '.\\images\\white_rook.png'
+        self.image_link = 'images/white_rook.png'
         self.color = white_pieces
         self.anti_color = black_pieces
 
@@ -348,7 +348,7 @@ class black_rook(Rook):
 
     def __init__(self):
 
-        self.image_link = '.\\images\\black_rook.png'
+        self.image_link = 'images/black_rook.png'
         self.color = black_pieces
         self.anti_color = white_pieces
 
@@ -356,7 +356,7 @@ class white_knight(Knight):
 
     def __init__(self):
 
-        self.image_link = '.\\images\\white_knight.png'
+        self.image_link = 'images/white_knight.png'
         self.color = white_pieces
         self.anti_color = black_pieces
 
@@ -364,7 +364,7 @@ class black_knight(Knight):
 
     def __init__(self):
 
-        self.image_link = '.\\images\\black_knight.png'
+        self.image_link = 'images/black_knight.png'
         self.color = black_pieces
         self.anti_color = white_pieces
 
@@ -372,7 +372,7 @@ class white_bishop(Bishop):
 
     def __init__(self):
 
-        self.image_link = '.\\images\\white_bishop.png'
+        self.image_link = 'images/white_bishop.png'
         self.color = white_pieces
         self.anti_color = black_pieces
 
@@ -380,7 +380,7 @@ class black_bishop(Bishop):
 
     def __init__(self):
 
-        self.image_link = '.\\images\\black_bishop.png'
+        self.image_link = 'images/black_bishop.png'
         self.color = black_pieces
         self.anti_color = white_pieces
 
@@ -388,7 +388,7 @@ class white_queen(Queen):
 
     def __init__(self):
 
-        self.image_link = '.\\images\\white_queen.png'
+        self.image_link = 'images/white_queen.png'
         self.color = white_pieces
         self.anti_color = black_pieces
 
@@ -396,7 +396,7 @@ class black_queen(Queen):
 
     def __init__(self):
 
-        self.image_link = '.\\images\\black_queen.png'
+        self.image_link = 'images/black_queen.png'
         self.color = black_pieces
         self.anti_color = white_pieces
 
@@ -462,7 +462,7 @@ class white_king(King):
 
     def __init__(self):
 
-        self.image_link = '.\\images\\white_king.png'
+        self.image_link = 'images/white_king.png'
         self.moved = False
         self.x = 4
         self.y = 7
@@ -474,7 +474,7 @@ class black_king(King):
 
     def __init__(self):
 
-        self.image_link = '.\\images\\black_king.png'
+        self.image_link = 'images/black_king.png'
         self.moved = False
         self.x = 4
         self.y = 0

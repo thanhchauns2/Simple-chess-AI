@@ -35,7 +35,7 @@ def run():
     black_moves = []
 
     white_moves = []
-    
+
     sequence_moves = []
 
     while True:
@@ -64,15 +64,18 @@ def run():
                 return
             if not END and machine_learning == True:
                 if player == 1:
-                    state = computer_move(state, white_moves, sequence_moves, 0)
+                    state = computer_move(state, white_moves, sequence_moves,
+                                          0)
                     player = -1
                 else:
-                    state = computer_move(state, black_moves, sequence_moves, 1)
+                    state = computer_move(state, black_moves, sequence_moves,
+                                          1)
                     player = 1
                 continue
             elif not END and play_vs_computer == True:
                 if player == -1:
-                    state = computer_move(state, black_moves, sequence_moves, 1)
+                    state = computer_move(state, black_moves, sequence_moves,
+                                          1)
                     player = 1
                     continue
             elif ev.type == pygame.MOUSEBUTTONUP:
@@ -97,11 +100,18 @@ def run():
                     old_pos = (pos[0] // chess_pieces, pos[1] // chess_pieces)
                     if state.board[old_pos[0]][old_pos[1]] == ' ':
                         continue
-                    if state.board[old_pos[0]][old_pos[1]] in black_pieces and player == 1:
+                    if state.board[old_pos[0]][
+                            old_pos[1]] in black_pieces and player == 1:
                         continue
-                    if state.board[old_pos[0]][old_pos[1]] in white_pieces and player == -1:
+                    if state.board[old_pos[0]][
+                            old_pos[1]] in white_pieces and player == -1:
                         continue
                     selected = True
+
+
+from keep_alive import keep_alive
+
+keep_alive()
 
 if machine_learning == True:
     while True:
