@@ -180,7 +180,7 @@ class Pawn(Pieces):
     def taking_piece(self, board, old_pos, new_pos):
         if invalid_position(new_pos):
             return False
-        if old_pos[1] != new_pos[1] + self.direction:
+        if old_pos[1] != new_pos[1] - self.direction:
             return False
         if abs(old_pos[0] - new_pos[0]) != 1:
             return False
@@ -191,10 +191,11 @@ class Pawn(Pieces):
     def first_move(self, board, old_pos, new_pos):
         if invalid_position(new_pos):
             return False
-        if old_pos[1] == new_pos[1] + 2 * self.direction and old_pos[0] == new_pos[0]:
+        if old_pos[1] == new_pos[1] - 2 * self.direction and old_pos[0] == new_pos[0]:
             if old_pos[1] != self.first_place:
                 return False
-            if board[new_pos[0]][new_pos[1] + self.direction] != ' ' or board[new_pos[0]][new_pos[1]] != ' ':
+            if board[new_pos[0]][new_pos[1] - self.direction] != ' ' or board[new_pos[0]][new_pos[1]] != ' ':
+                # print('boo')
                 return False
             return True
         return False
@@ -202,7 +203,7 @@ class Pawn(Pieces):
     def regular_move(self, board, old_pos, new_pos):
         if invalid_position(new_pos):
             return False
-        if old_pos[1] != new_pos[1] + self.direction:
+        if old_pos[1] != new_pos[1] - self.direction:
             return False
         if abs(old_pos[0] - new_pos[0]) != 0:
             return False
@@ -322,7 +323,7 @@ class white_pawn(Pawn):
 
     def __init__(self):
         self.image_link = 'images/white_pawn.jpg'
-        self.direction = 1
+        self.direction = -1
         self.first_place = 6
         self.anti_color = black_pieces
         self.color = white_pieces
@@ -331,7 +332,7 @@ class black_pawn(Pawn):
 
     def __init__(self):
         self.image_link = 'images/black_pawn.png'
-        self.direction = -1
+        self.direction = 1
         self.first_place = 1
         self.anti_color = white_pieces
         self.color = black_pieces

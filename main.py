@@ -111,7 +111,7 @@ def run():
 
 from keep_alive import keep_alive
 
-keep_alive()
+# keep_alive()
 
 if machine_learning == True:
     while True:

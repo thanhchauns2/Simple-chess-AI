@@ -170,6 +170,7 @@ def get_black_available_moves(state):
 def get_white_available_moves(state):
     available_moves = []
     for i in state.white_pieces_list:
+        # print(i)
         available_moves += get_available_moves(state.board, i[0], i[1])
     return available_moves
     # pieces = []
