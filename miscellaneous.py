@@ -59,3 +59,13 @@ print(k)
 #     |    |    |    |    |    |    |    |    |
 #     | 56 | 57 | 58 | 59 | 60 | 61 | 62 | 63 |
 #     |____|____|____|____|____|____|____|____|
+
+
+# import sqlite3
+# connection = sqlite3.connect('chessboard.db')
+# cursor = connection.cursor()
+# cursor.execute('''CREATE TABLE IF NOT EXISTS Shows
+#               (Chessboard_ID INTEGER PRIMARY KEY, wins INTEGER, loses INTEGER, draws INTEGER)''')
+
+# connection.commit()
+# connection.close()

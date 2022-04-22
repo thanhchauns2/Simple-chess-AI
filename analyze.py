@@ -1,6 +1,8 @@
 from evaluation import *
 from draw import *
 from drawing.pieces import *
+from drawing.board import *
+import sqlite3
 
 def check_late(state):
     serial  = (state.pieces_counting['q'] == 0 
@@ -38,7 +40,7 @@ def analyze_current_state(state):
     
     for (i, j) in state.white_pieces_list:
         if state.board[i][j] == 'k':
-            white -= 900
+            white += 900
             if late:
                 white += evaluate['k']['late'][i][j]
             else:
@@ -176,3 +178,77 @@ def get_white_available_moves(state):
     #         if board[i][j] in white_pieces:
     #             pieces.append((i, j))
     # return get_available_moves_multiple_pieces(board, pieces)
+
+def Zobrist_code(state):
+    
+    h = 0
+    if color == 'black':
+        h = Zobrist_table['black_turn'][0]
+    
+    Zobrist_decode = {
+        'p': 0,
+        'P': 1,
+        'r': 2,
+        'R': 3,
+        'n': 4,
+        'N': 5,
+        'b': 6,
+        'B': 7,
+        'q': 8,
+        'Q': 9,
+        'k': 10,
+        'K': 11,
+    }
+
+    for i in state.black_pieces_list:
+        k = i[0] * 8 + i[1]
+        h ^= Zobrist_table[k][Zobrist_decode[state.board[i[0]][i[1]]]]
+    
+    for i in state.white_pieces_list:
+        k = i[0] * 8 + i[1]
+        h ^= Zobrist_table[k][Zobrist_decode[state.board[i[0]][i[1]]]]
+
+    return h
+
+def calculate_probability(state, color):
+
+    h = Zobrist_code(state)
+    
+    win, draw, lose = 0, 0, 0
+    
+    connection = sqlite3.connect('chessboard.db')
+    cursor = connection.cursor()
+    cursor.execute('''SELECT * FROM Shows WHERE Chessboard_ID = %d''' %h)
+    record = cursor.fetchall()
+
+    if len(record) == 0:
+        cursor.execute('''INSERT INTO Shows (Chessboard_ID, wins, loses, draws) VALUES (%d, 0, 0, 0)''' %h)
+        connection.commit()
+    else:
+        win = record[0][1]
+        lose = record[0][2]
+        draw = record[0][3]
+
+    connection.commit()
+    connection.close()
+
+    if  win == 0 and lose == 0:
+        return 0.5
+    else:
+        return win + draw * 0.5 / (win + lose + draw)
+
+def update_win(win_list):
+    connection = sqlite3.connect('chessboard.db')
+    cursor = connection.cursor()
+    for i in win_list:
+        cursor.execute('''UPDATE Shows SET wins = wins + 1 WHERE Chessboard_ID = %d''' %i)
+    connection.commit()
+    connection.close()
+
+def update_lose(lose_list):
+    connection = sqlite3.connect('chessboard.db')
+    cursor = connection.cursor()
+    for i in lose_list:
+        cursor.execute('''UPDATE Shows SET loses = loses + 1 WHERE Chessboard_ID = %d''' %i)
+    connection.commit()
+    connection.close()
