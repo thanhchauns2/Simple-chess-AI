@@ -14,7 +14,7 @@ def computer_move(state, moves, sequence_moves, tag = 1):
     temp_moves = []
     current_point = analyze_current_state(state)
 
-    print(available_moves)
+    # print(available_moves)
 
     # before = counting_pieces(board)
 
@@ -98,7 +98,7 @@ def computer_move(state, moves, sequence_moves, tag = 1):
 
     print(available_moves)
 
-    print(sequence_moves.count(available_moves[0]))
+    # print(sequence_moves.count(available_moves[0]))
 
     return state
 
