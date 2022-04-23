@@ -229,6 +229,8 @@ def calculate_probability(state, color):
         win = record[0][1]
         lose = record[0][2]
         draw = record[0][3]
+    
+    # print(win, draw, lose)
 
     connection.commit()
     connection.close()
@@ -236,7 +238,7 @@ def calculate_probability(state, color):
     if  win == 0 and lose == 0:
         return 0.5
     else:
-        return win + draw * 0.5 / (win + lose + draw)
+        return (win + draw * 0.5) / (win + lose + draw)
 
 def update_win(win_list):
     connection = sqlite3.connect('chessboard.db')

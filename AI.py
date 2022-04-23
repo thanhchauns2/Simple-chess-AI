@@ -24,12 +24,13 @@ def computer_move(state, moves, sequence_moves, tag = 1):
 
         probalitiy = calculate_probability(state, tag_board[tag])
 
-        point *= probalitiy
+        point += probalitiy * 100 * (tag == 'white') - probalitiy * 100 * (tag == 'black')
 
         if tag == 0:
 
             if point > beta:
                 x = [x[0], x[1], point]
+                x[2] = deep_analyze(state, x[0], x[1], tag = tag_board[1 - tag])[2]
                 make_moves(state, x[0], x[1])
                 sequence_moves.append(available_moves[0])
 
@@ -61,6 +62,7 @@ def computer_move(state, moves, sequence_moves, tag = 1):
 
             if point < alpha:
                 x = [x[0], x[1], point]
+                x[2] = deep_analyze(state, x[0], x[1], tag = tag_board[1 - tag])[2]
                 make_moves(state, x[0], x[1])
                 sequence_moves.append(available_moves[0])
 
@@ -118,6 +120,8 @@ def computer_move(state, moves, sequence_moves, tag = 1):
 
     print(available_moves)
 
+    print(calculate_probability(state, tag_board[tag]))
+
     # print(sequence_moves.count(available_moves[0]))
 
     return state
@@ -155,8 +159,7 @@ def deep_analyze(state, old_pos, new_pos, tag = 'white', depth = 0, max_depth = 
 
             probalitiy = calculate_probability(state, tag)
 
-            point *= probalitiy
-
+            point += probalitiy * 100 * (tag == 'white') - probalitiy * 100 * (tag == 'black') 
             if point < alpha:
                 if depth == max_depth:
                     point = alpha - 1
@@ -210,7 +213,7 @@ def deep_analyze(state, old_pos, new_pos, tag = 'white', depth = 0, max_depth = 
 
             probalitiy = calculate_probability(state, tag)
 
-            point *= probalitiy
+            point += probalitiy * 100 * (tag == 'white') - probalitiy * 100 * (tag == 'black')
 
             if point > beta:
                 if depth == max_depth:
