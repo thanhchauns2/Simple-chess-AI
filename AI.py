@@ -28,6 +28,16 @@ def computer_move(state, moves, sequence_moves, tag = 1):
 
         if tag == 0:
 
+            if point > beta:
+                x = [x[0], x[1], point]
+                make_moves(state, x[0], x[1])
+                sequence_moves.append(available_moves[0])
+
+                id = Zobrist_code(state)
+
+                moves.append(id)
+                return state
+
             if len(temp_moves) >= best_moves_limit and temp_moves[0][2] >= point:
                 continue
             captured_piece = state.board[x[1][0]][x[1][1]]
@@ -38,7 +48,7 @@ def computer_move(state, moves, sequence_moves, tag = 1):
 
             if cnt >= 2:
                 undo_moves(state, x[0], x[1], captured_piece, promoted)
-                print(x, "gotem")
+                # print(x, "gotem")
                 continue
 
             temp_moves.append(x)
@@ -48,6 +58,16 @@ def computer_move(state, moves, sequence_moves, tag = 1):
             undo_moves(state, x[0], x[1], captured_piece, promoted)
         
         else:
+
+            if point < alpha:
+                x = [x[0], x[1], point]
+                make_moves(state, x[0], x[1])
+                sequence_moves.append(available_moves[0])
+
+                id = Zobrist_code(state)
+
+                moves.append(id)
+                return state
             
             if len(temp_moves) >= best_moves_limit and temp_moves[best_moves_limit - 1][2] <= point:
                 continue
@@ -136,6 +156,15 @@ def deep_analyze(state, old_pos, new_pos, tag = 'white', depth = 0, max_depth = 
             probalitiy = calculate_probability(state, tag)
 
             point *= probalitiy
+
+            if point < alpha:
+                if depth == max_depth:
+                    point = alpha - 1
+                else:
+                    point = deep_analyze(state, x[0], x[1], 'white', depth + 1, max_depth)[2]
+                x = [x[0], x[1], point]
+                undo_moves(state, old_pos, new_pos, current_captured_piece, current_promotion)
+                return x
             # print(current_point, point)
             if len(temp_moves) >= best_moves_limit and temp_moves[best_moves_limit - 1][2] <= point:
                 continue
@@ -182,6 +211,15 @@ def deep_analyze(state, old_pos, new_pos, tag = 'white', depth = 0, max_depth = 
             probalitiy = calculate_probability(state, tag)
 
             point *= probalitiy
+
+            if point > beta:
+                if depth == max_depth:
+                    point = beta + 1
+                else:
+                    point = deep_analyze(state, x[0], x[1], 'white', depth + 1, max_depth)[2]
+                undo_moves(state, old_pos, new_pos, current_captured_piece, current_promotion)
+                x = [x[0], x[1], point]
+                return x
 
             if len(temp_moves) >= best_moves_limit and temp_moves[0][2] >= point:
                 continue

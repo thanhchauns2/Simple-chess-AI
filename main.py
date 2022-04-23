@@ -6,8 +6,9 @@ from drawing.pieces import *
 from AI import *
 from evaluation import *
 from analyze import *
+import time
 
-# pygame.init()
+pygame.init()
 
 play_vs_computer = True
 
@@ -18,9 +19,9 @@ machine_learning = True
 
 def run():
 
-    # screen = new_chess_board()
+    screen = new_chess_board()
 
-    # board = new_board()
+    board = new_board()
 
     state = State()
 
@@ -39,29 +40,31 @@ def run():
     sequence_moves = []
 
     while True:
-        # event = pygame.event.get()
-        # for ev in event:
-        #     if selected:
-        #         screen = draw_highlighted_board(state, old_pos[0], old_pos[1])
-        #     else:
-        #         screen = draw_board(state)
+        event = pygame.event.get()
+        for ev in event:
+            if selected:
+                screen = draw_highlighted_board(state, old_pos[0], old_pos[1])
+            else:
+                screen = draw_board(state)
             END = check_end_game(state)
             if END == 1:
-                # draw_text(screen, 'You Lost.')
+                draw_text(screen, 'You Lost.')
                 update_win(black_moves)
                 update_lose(white_moves)
                 if machine_learning:
+                    time.sleep(2)
                     return
             elif END == -1:
-                # draw_text(screen, 'You won!')
+                draw_text(screen, 'You won!')
                 update_win(white_moves)
                 update_lose(black_moves)
                 if machine_learning:
+                    time.sleep(2)
                     return
-            # pygame.display.update()
-            # if ev.type == pygame.QUIT:
-            #     pygame.quit()
-            #     return
+            pygame.display.update()
+            if ev.type == pygame.QUIT:
+                pygame.quit()
+                return
             if not END and machine_learning == True:
                 if player == 1:
                     state = computer_move(state, white_moves, sequence_moves,
@@ -109,9 +112,9 @@ def run():
                     selected = True
 
 
-from keep_alive import keep_alive
+# from keep_alive import keep_alive
 
-keep_alive()
+# keep_alive()
 
 if machine_learning == True:
     while True:
