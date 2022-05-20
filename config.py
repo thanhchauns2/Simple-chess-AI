@@ -18,7 +18,13 @@ text_color = (249, 248, 113)
 
 # AI config
 
+<<<<<<< Updated upstream
 best_moves_limit = 10
 analyze_depth = 2
+=======
+probability_scale = 200
+best_moves_limit = 3
+analyze_depth = 4
+>>>>>>> Stashed changes
 alpha = -500
 beta = 500

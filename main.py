@@ -10,7 +10,7 @@ import time
 
 pygame.init()
 
-play_vs_computer = True
+play_vs_computer = False
 
 machine_learning = False
 
@@ -116,7 +116,11 @@ def run():
 
 # keep_alive()
 
+<<<<<<< Updated upstream
 # from threading import Thread
+=======
+from threading import Thread
+>>>>>>> Stashed changes
 
 def Tr():
   if machine_learning == True:
@@ -125,10 +129,15 @@ def Tr():
   else:
       run()
 
+<<<<<<< Updated upstream
 Tr()
 
 # thread1 = Thread(target = Tr)
 # thread1.start()
+=======
+thread1 = Thread(target = Tr)
+thread1.start()
+>>>>>>> Stashed changes
 # thread2 = Thread(target = Tr)
 # thread2.start()
 # thread3 = Thread(target = Tr)
@@ -136,6 +145,7 @@ Tr()
 # thread4 = Thread(target = Tr)
 # thread4.start()
 # thread5 = Thread(target = Tr)
+<<<<<<< Updated upstream
 # thread5.start()
 # thread6 = Thread(target = Tr)
 # thread6.start()
@@ -157,3 +167,6 @@ Tr()
 # thread14.start()
 # thread15 = Thread(target = Tr)
 # thread15.start()
+=======
+# thread5.start()
+>>>>>>> Stashed changes

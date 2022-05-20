@@ -22,9 +22,9 @@ def computer_move(state, moves, sequence_moves, tag = 1):
 
         point = analyze_next_state(current_point, x[0], x[1], state.board[x[0][0]][x[0][1]], state.board[x[1][0]][x[1][1]], state.pieces_counting)
 
-        probalitiy = calculate_probability(state, tag_board[tag])
+        probability = calculate_probability(state, tag_board[tag])
 
-        point += probalitiy * 300
+        point += probability * probability_scale
 
         if tag == 0:
 
@@ -157,9 +157,9 @@ def deep_analyze(state, old_pos, new_pos, tag = 'white', depth = 0, max_depth = 
         for x in available_moves:
             point = analyze_next_state(current_point, x[0], x[1], state.board[x[0][0]][x[0][1]], state.board[x[1][0]][x[1][1]], state.pieces_counting)
 
-            probalitiy = calculate_probability(state, tag)
+            probability = calculate_probability(state, tag)
 
-            point += probalitiy * 300
+            point += probability * probability_scale
             if point < alpha:
                 if depth == max_depth:
                     point = alpha - 1
@@ -211,9 +211,9 @@ def deep_analyze(state, old_pos, new_pos, tag = 'white', depth = 0, max_depth = 
         for x in available_moves:
             point = analyze_next_state(current_point, x[0], x[1], state.board[x[0][0]][x[0][1]], state.board[x[1][0]][x[1][1]], state.pieces_counting)
 
-            probalitiy = calculate_probability(state, tag)
+            probability = calculate_probability(state, tag)
 
-            point += probalitiy * 300
+            point += probability * probability_scale
 
             if point > beta:
                 if depth == max_depth:
