@@ -12,7 +12,7 @@ pygame.init()
 
 play_vs_computer = False
 
-machine_learning = False
+machine_learning = True
 
 # piece_list = counting_pieces(board)
 
@@ -116,11 +116,14 @@ def run():
 
 # keep_alive()
 
-<<<<<<< Updated upstream
-# from threading import Thread
-=======
+# <<<<<<< Updated upstream
+# <<<<<<< Updated upstream
+# # from threading import Thread
+# =======
+# =======
+# >>>>>>> Stashed changes
 from threading import Thread
->>>>>>> Stashed changes
+# >>>>>>> Stashed changes
 
 def Tr():
   if machine_learning == True:
@@ -129,15 +132,18 @@ def Tr():
   else:
       run()
 
-<<<<<<< Updated upstream
+# <<<<<<< Updated upstream
 Tr()
 
 # thread1 = Thread(target = Tr)
 # thread1.start()
-=======
-thread1 = Thread(target = Tr)
-thread1.start()
->>>>>>> Stashed changes
+# =======
+# thread1 = Thread(target = Tr)
+# thread1.start()
+# <<<<<<< Updated upstream
+# >>>>>>> Stashed changes
+# =======
+# >>>>>>> Stashed changes
 # thread2 = Thread(target = Tr)
 # thread2.start()
 # thread3 = Thread(target = Tr)
@@ -145,7 +151,8 @@ thread1.start()
 # thread4 = Thread(target = Tr)
 # thread4.start()
 # thread5 = Thread(target = Tr)
-<<<<<<< Updated upstream
+# <<<<<<< Updated upstream
+# <<<<<<< Updated upstream
 # thread5.start()
 # thread6 = Thread(target = Tr)
 # thread6.start()
@@ -167,6 +174,9 @@ thread1.start()
 # thread14.start()
 # thread15 = Thread(target = Tr)
 # thread15.start()
-=======
-# thread5.start()
->>>>>>> Stashed changes
+# =======
+# # thread5.start()
+# >>>>>>> Stashed changes
+# =======
+# # thread5.start()
+# >>>>>>> Stashed changes
