@@ -8,18 +8,18 @@ from evaluation import *
 from analyze import *
 import time
 
-# pygame.init()
+pygame.init()
 
 play_vs_computer = True
 
-machine_learning = True
+machine_learning = False
 
 # piece_list = counting_pieces(board)
 
 
 def run():
 
-    # screen = new_chess_board()
+    screen = new_chess_board()
 
     board = new_board()
 
@@ -40,31 +40,31 @@ def run():
     sequence_moves = []
 
     while True:
-    #     event = pygame.event.get()
-    #     for ev in event:
-    #         if selected:
-    #             screen = draw_highlighted_board(state, old_pos[0], old_pos[1])
-    #         else:
-    #             screen = draw_board(state)
+        event = pygame.event.get()
+        for ev in event:
+            if selected:
+                screen = draw_highlighted_board(state, old_pos[0], old_pos[1])
+            else:
+                screen = draw_board(state)
             END = check_end_game(state)
             if END == 1:
-                # draw_text(screen, 'You Lost.')
+                draw_text(screen, 'You Lost.')
                 update_lose(black_moves)
                 update_lose(white_moves)
                 if machine_learning:
                     time.sleep(2)
                     return
             elif END == -1:
-                # draw_text(screen, 'You won!')
+                draw_text(screen, 'You won!')
                 update_win(white_moves)
                 update_win(black_moves)
                 if machine_learning:
                     time.sleep(2)
                     return
-            # pygame.display.update()
-            # if ev.type == pygame.QUIT:
-            #     pygame.quit()
-            #     return
+            pygame.display.update()
+            if ev.type == pygame.QUIT:
+                pygame.quit()
+                return
             if not END and machine_learning == True:
                 if player == 1:
                     state = computer_move(state, white_moves, sequence_moves,
@@ -75,13 +75,13 @@ def run():
                                           1)
                     player = 1
                 continue
-            elif not END and play_vs_computer == True:
+            if not END and play_vs_computer == True:
                 if player == -1:
                     state = computer_move(state, black_moves, sequence_moves,
                                           1)
                     player = 1
                     continue
-            elif ev.type == pygame.MOUSEBUTTONUP:
+            if ev.type == pygame.MOUSEBUTTONUP:
                 if END != 0:
                     exit(0)
                 if selected:
@@ -118,12 +118,14 @@ def run():
 
 # from threading import Thread
 
-# def Tr():
-#   if machine_learning == True:
-#       while True:
-#           run()
-#   else:
-#       run()
+def Tr():
+  if machine_learning == True:
+      while True:
+          run()
+  else:
+      run()
+
+Tr()
 
 # thread1 = Thread(target = Tr)
 # thread1.start()
@@ -135,3 +137,23 @@ def run():
 # thread4.start()
 # thread5 = Thread(target = Tr)
 # thread5.start()
+# thread6 = Thread(target = Tr)
+# thread6.start()
+# thread7 = Thread(target = Tr)
+# thread7.start()
+# thread8 = Thread(target = Tr)
+# thread8.start()
+# thread9 = Thread(target = Tr)
+# thread9.start()
+# thread10 = Thread(target = Tr)
+# thread10.start()
+# thread11 = Thread(target = Tr)
+# thread11.start()
+# thread12 = Thread(target = Tr)
+# thread12.start()
+# thread13 = Thread(target = Tr)
+# thread13.start()
+# thread14 = Thread(target = Tr)
+# thread14.start()
+# thread15 = Thread(target = Tr)
+# thread15.start()
