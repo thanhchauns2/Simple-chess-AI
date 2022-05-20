@@ -75,63 +75,63 @@ def run():
                                           1)
                     player = 1
                 continue
-            # elif not END and play_vs_computer == True:
-            #     if player == -1:
-            #         state = computer_move(state, black_moves, sequence_moves,
-            #                               1)
-            #         player = 1
-            #         continue
-            # elif ev.type == pygame.MOUSEBUTTONUP:
-            #     if END != 0:
-            #         exit(0)
-            #     if selected:
-            #         selected = False
-            #         pos = pygame.mouse.get_pos()
-            #         new_pos = (pos[0] // chess_pieces, pos[1] // chess_pieces)
-            #         if is_valid(state, new_pos, old_pos):
-            #             if state.board[old_pos[0]][old_pos[1]] == 'k':
-            #                 change_state_white_king(new_pos)
-            #             elif state.board[old_pos[0]][old_pos[1]] == 'K':
-            #                 change_state_black_king(new_pos)
-            #             make_moves(state, old_pos, new_pos)
-            #             sequence_moves.append([old_pos, new_pos])
-            #             id = Zobrist_code(state)
-            #             white_moves.append(id)
-            #             player = -player
-            #     else:
-            #         pos = pygame.mouse.get_pos()
-            #         old_pos = (pos[0] // chess_pieces, pos[1] // chess_pieces)
-            #         if state.board[old_pos[0]][old_pos[1]] == ' ':
-            #             continue
-            #         if state.board[old_pos[0]][
-            #                 old_pos[1]] in black_pieces and player == 1:
-            #             continue
-            #         if state.board[old_pos[0]][
-            #                 old_pos[1]] in white_pieces and player == -1:
-            #             continue
-                    # selected = True
+            elif not END and play_vs_computer == True:
+                if player == -1:
+                    state = computer_move(state, black_moves, sequence_moves,
+                                          1)
+                    player = 1
+                    continue
+            elif ev.type == pygame.MOUSEBUTTONUP:
+                if END != 0:
+                    exit(0)
+                if selected:
+                    selected = False
+                    pos = pygame.mouse.get_pos()
+                    new_pos = (pos[0] // chess_pieces, pos[1] // chess_pieces)
+                    if is_valid(state, new_pos, old_pos):
+                        if state.board[old_pos[0]][old_pos[1]] == 'k':
+                            change_state_white_king(new_pos)
+                        elif state.board[old_pos[0]][old_pos[1]] == 'K':
+                            change_state_black_king(new_pos)
+                        make_moves(state, old_pos, new_pos)
+                        sequence_moves.append([old_pos, new_pos])
+                        id = Zobrist_code(state)
+                        white_moves.append(id)
+                        player = -player
+                else:
+                    pos = pygame.mouse.get_pos()
+                    old_pos = (pos[0] // chess_pieces, pos[1] // chess_pieces)
+                    if state.board[old_pos[0]][old_pos[1]] == ' ':
+                        continue
+                    if state.board[old_pos[0]][
+                            old_pos[1]] in black_pieces and player == 1:
+                        continue
+                    if state.board[old_pos[0]][
+                            old_pos[1]] in white_pieces and player == -1:
+                        continue
+                    selected = True
 
 
-from keep_alive import keep_alive
+# from keep_alive import keep_alive
 
-keep_alive()
+# keep_alive()
 
-from threading import Thread
+# from threading import Thread
 
-def Tr():
-  if machine_learning == True:
-      while True:
-          run()
-  else:
-      run()
+# def Tr():
+#   if machine_learning == True:
+#       while True:
+#           run()
+#   else:
+#       run()
 
-thread1 = Thread(target = Tr)
-thread1.start()
-thread2 = Thread(target = Tr)
-thread2.start()
-thread3 = Thread(target = Tr)
-thread3.start()
-thread4 = Thread(target = Tr)
-thread4.start()
-thread5 = Thread(target = Tr)
-thread5.start()
+# thread1 = Thread(target = Tr)
+# thread1.start()
+# thread2 = Thread(target = Tr)
+# thread2.start()
+# thread3 = Thread(target = Tr)
+# thread3.start()
+# thread4 = Thread(target = Tr)
+# thread4.start()
+# thread5 = Thread(target = Tr)
+# thread5.start()
