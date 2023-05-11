@@ -1,8 +1,6 @@
-# Bài tập lớn môn Thực tập cơ sở
-
-## Họ và tên: Nguyễn Thanh Châu
+## Leader: Nguyễn Thanh Châu
 ## MSV: B19DCCN096
-## Đề tài: AI cờ vua, sử dụng Minimax, nhánh cận và hàm Heuristic.
+## Đề tài: nghiên cứu AI cờ vua, sử dụng Minimax, nhánh cận và hàm Heuristic.
 
 Cách sử dụng:
 
@@ -20,3 +18,11 @@ Thư viện yêu cầu: pygame, time, sqlite3.
 Để thay đổi hàm heuristic, thay thế các biến trong file "evaluation.py", tuy nhiên không được thay đổi dữ liệu trong hai từ điển "pieces" và "color".
 
 Để thay đổi màu sắc bàn cờ, độ lớn bàn cờ, màu sắc highlight, kích cỡ chữ in ra màn hình, v/v, thay thế các biến trong file "config.py".
+
+## Project bao gồm sự hỗ trợ của
+
+- Trần Đức Huy - B20DCCN325
+- Mai Quang Huy - B20DCCN313
+- Nguyễn Thành Danh - B20DCAT028
+
+Project được thực hiện bởi 4 người, và không có sự can thiệp từ bên ngoài. Vui lòng không lấy code dưới mọi hình thức.
